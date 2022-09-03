@@ -1,0 +1,3 @@
+[submodule "lottery-ethereum-boilerplate"]
+	path = lottery-ethereum-boilerplate
+	url = https://github.com/TusharIbtekar/lottery-ethereum-boilerplate

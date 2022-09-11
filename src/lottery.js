@@ -1,6 +1,6 @@
 import web3 from './web3';
 
-const address = '0x3D7086fDc2351684Ef0A4329577c43f794424816';
+const address = '0x9eab6C38A47a4522D7536b636f9Bd1074827cef1';
 const abi = [
   {
     inputs: [],
@@ -8,17 +8,17 @@ const abi = [
     type: 'constructor',
     constant: undefined,
     payable: undefined,
-    signature: 'constructor'
+    signature: 'constructor'      
   },
   {
     inputs: [],
     name: 'enter',
     outputs: [],
-    stateMutability: 'payable',
+    stateMutability: 'payable',   
     type: 'function',
     constant: undefined,
     payable: true,
-    signature: '0xe97dcb62'
+    signature: '0xe97dcb62'       
   },
   {
     inputs: [],
@@ -75,6 +75,16 @@ const abi = [
     constant: true,
     payable: undefined,
     signature: '0xf71d96cb'
+  },
+  {
+    inputs: [],
+    name: 'winner',
+    outputs: [ { internalType: 'address', name: '', type: 'address' } ],
+    stateMutability: 'view',
+    type: 'function',
+    constant: true,
+    payable: undefined,
+    signature: '0xdfbf53ae'
   }
 ];
 

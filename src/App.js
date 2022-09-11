@@ -3,11 +3,12 @@ import lottery from './lottery';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [manager, setManager] = useState();
+  const [manager, setManager] = useState('');
   const [balance, setBalance] = useState('');
   const [paidBalance, setPaidBalance] = useState();
   const [players, setPlayers] = useState([]);
   const [message, setMessage] = useState();
+  const [currentAccount, setCurrentAccount] = useState();
  
   useEffect(() => {
     ( async () => {
@@ -16,26 +17,30 @@ function App() {
       setManager(currentManager);
       setPlayers(currentPlayers);
     } )();
-  }, [])
+  }, []);
 
   useEffect(() => {
     ( async () => {
       const currentBalance = await web3.eth.getBalance(lottery.options.address);
       setBalance(currentBalance);
     } )();
-  }, [players])
+  }, [players]);
 
-  
+  ( async () => {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    setCurrentAccount(accounts[0]);
+    window.ethereum.on('accountsChanged', function (accounts) {
+      setCurrentAccount(accounts[0]);
+    })
+  } )();
 
   const onSubmit = async (event) => { 
     event.preventDefault();
 
-    const accounts = await web3.eth.getAccounts();
-
     setMessage('Waiting on transaction success..');
     
     await lottery.methods.enter().send({
-      from: accounts[0],
+      from: currentAccount,
       value: web3.utils.toWei(paidBalance, 'ether')
     });
     
@@ -44,15 +49,15 @@ function App() {
   }
 
   const getWinner = async () => {
-    const accounts = await web3.eth.getAccounts();
-
     setMessage('Waiting on transaction success..');
 
     await lottery.methods.pickWinner().send({
-      from: accounts[0]
+      from: manager
     });
 
-    setMessage('Winner has been picked!')
+    const winner = await lottery.methods.winner().call();
+
+    setMessage(winner+' is the Winner!');
   }
   
   // web3.eth.getAccounts().then(console.log)
@@ -82,10 +87,15 @@ function App() {
 
       <hr/>
 
-      <h4>Ready to pick a winner?</h4>
-      <button onClick={getWinner}>Pick a Winner!</button>
-
-      <hr/>
+      { currentAccount === manager.toLowerCase() ? (
+        <>
+          <h4>Ready to pick a winner?</h4>
+          <button onClick={getWinner}>Pick a Winner!</button>
+    
+          <hr/>
+        </>
+      ): null
+      }
 
       <h1>{ message }</h1>
     </div>

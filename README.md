@@ -9,3 +9,5 @@ A Lottery webapp with ethereum boilerplate where participants can participate wi
 ```
 ## Built with
 - **Framework**: React.js, Ethereum
+- **Wallet**: MetaMask
+- **Test Network**: Rinkeby
